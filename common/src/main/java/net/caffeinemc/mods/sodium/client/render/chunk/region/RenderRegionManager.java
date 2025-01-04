@@ -77,6 +77,7 @@ public class RenderRegionManager {
 
                     if (storage != null) {
                         storage.removeVertexData(renderSectionIndex);
+                        region.clearCachedBatchFor(pass);
                     }
 
                     BuiltSectionMeshParts mesh = chunkBuildOutput.getMesh(pass);
@@ -99,6 +100,7 @@ public class RenderRegionManager {
                     if (storage != null) {
                         storage.removeIndexData(renderSectionIndex);
                         storage.setSharedIndexUsage(renderSectionIndex, 0);
+                        region.clearCachedBatchFor(DefaultTerrainRenderPasses.TRANSLUCENT);
                     }
 
                     if (sorter == null) {
@@ -137,6 +139,7 @@ public class RenderRegionManager {
             // Once invalidated the tessellation will be re-created on the next attempted use
             if (bufferChanged) {
                 region.refreshTesselation(commandList);
+                region.clearAllCachedBatches();
             }
 
             // Collect the upload results
@@ -167,6 +170,7 @@ public class RenderRegionManager {
 
         if (indexBufferChanged) {
             region.refreshIndexedTesselation(commandList);
+            region.clearCachedBatchFor(DefaultTerrainRenderPasses.TRANSLUCENT);
         }
 
         profiler.pop();
